@@ -2,12 +2,7 @@ package ru.skillbranch.devintensive.extensions
 
 import ru.skillbranch.devintensive.models.User
 import ru.skillbranch.devintensive.models.UserView
-import ru.skillbranch.devintensive.utils.Utils
-import java.util.*
-
-/**
- * Created by BashkatovSM on 28.06.2019
- */
+import studio.eyesthetics.devintensive.utils.Utils
 
 fun User.toUserView() : UserView {
 

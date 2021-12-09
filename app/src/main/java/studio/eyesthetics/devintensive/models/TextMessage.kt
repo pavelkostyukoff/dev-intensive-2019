@@ -4,9 +4,6 @@ package ru.skillbranch.devintensive.models
 import ru.skillbranch.devintensive.extensions.humanizeDiff
 import java.util.*
 
-/**
- * Created by BashkatovSM on 28.06.2019
- */
 class TextMessage(
     id: String,
     from: User?,
