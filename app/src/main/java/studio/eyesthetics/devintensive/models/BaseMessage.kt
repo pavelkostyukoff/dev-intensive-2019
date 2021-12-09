@@ -2,9 +2,6 @@ package ru.skillbranch.devintensive.models
 
 import java.util.*
 
-/**
- * Created by BashkatovSM on 28.06.2019
- */
 abstract class BaseMessage(
     val id: String,
     val from: User?,
