@@ -1,5 +1,10 @@
-package studio.eyesthetics.devintensive.utils
+package ru.skillbranch.devintensive.utils
 
+import ru.skillbranch.devintensive.extensions.*
+
+/**
+ * Created by Spinking on 27.06.2019.
+ */
 
 object Utils {
     fun parseFullName(fullName:String?) : Pair<String?, String?> {
@@ -109,4 +114,8 @@ object Utils {
         if(first.matches(p)) return null
         return first.toUpperCase()
     }
+
+
+
+
 }

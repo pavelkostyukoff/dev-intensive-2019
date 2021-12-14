@@ -5,6 +5,7 @@ import android.graphics.Rect
 import android.view.View
 
 
+
 fun Activity.hideKeyboard() {
     hideKeyboard(if (currentFocus == null) View(this) else currentFocus)
 }
@@ -20,7 +21,6 @@ fun Activity.isKeyboardOpen(): Boolean{
 }
 
 fun Activity.isKeyboardClosed(): Boolean = !this.isKeyboardOpen()
-
 
 
 

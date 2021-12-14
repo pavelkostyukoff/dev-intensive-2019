@@ -1,8 +1,6 @@
 package studio.eyesthetics.devintensive.models
 
-/**
- * Created by BashkatovSM on 10.07.2019
- */
+
 class Bender(var status: Status = Status.NORMAL, var question: Question = Question.NAME) {
 
     fun askQuestion(): String = when(question){
@@ -77,7 +75,7 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Questi
             Question.MATERIAL -> (answer.matches(Regex("\\D+")))
             Question.BDAY -> answer.matches(Regex("\\d+"))
             Question.SERIAL -> answer.matches(Regex("^[\\d]{7}\$"))
-            else -> false
+                else -> false
         }
     }
 

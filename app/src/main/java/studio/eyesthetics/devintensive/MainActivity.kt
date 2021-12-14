@@ -46,6 +46,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener,ValueAnimator.Ani
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
         benderImage = iv_bender
         textTxt = tv_text
         messageEt = et_message

@@ -2,6 +2,7 @@ package ru.skillbranch.devintensive.models
 
 import java.util.*
 
+
 abstract class BaseMessage(
     val id: String,
     val from: User?,

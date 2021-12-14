@@ -1,11 +1,9 @@
 package ru.skillbranch.devintensive.models
 
-import studio.eyesthetics.devintensive.utils.Utils
+import ru.skillbranch.devintensive.utils.Utils
 import java.util.*
 
-/**
- * Created by Spinking on 27.06.2019
- */
+
 
 data class User (
     val id : String,
