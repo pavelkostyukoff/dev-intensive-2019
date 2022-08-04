@@ -1,9 +1,8 @@
 package ru.skillbranch.devintensive.models
 
-
 class Bender(var status: Status = Status.NORMAL, var question: Question = Question.NAME) {
 
-    fun askQuestion(): String = when(question){
+    fun askQuestion(): String = when (question) {
         Question.NAME -> Question.NAME.question
         Question.PROFESSION -> Question.PROFESSION.question
         Question.MATERIAL -> Question.MATERIAL.question
@@ -12,82 +11,84 @@ class Bender(var status: Status = Status.NORMAL, var question: Question = Questi
         Question.IDLE -> Question.IDLE.question
     }
 
-    fun listenAnswer(answer: String) : Pair<String, Triple<Int, Int, Int>> {
+    fun listenAnswer(answer: String): Pair<String, Triple<Int, Int, Int>> = when (question) {
+        Question.IDLE -> question.question to status.color
+        else -> "${checkAnswer(answer)}\n${question.question}" to status.color
+    }
 
-        if(validation(answer)) {
-            return if(question.answers.contains(answer.toLowerCase())) {
+    private fun checkAnswer(answer: String): String {
+        val isValid = question.validate(answer)
+        return if (isValid) {
+            if (question.answers.contains(answer.toLowerCase())) {
                 question = question.nextQuestion()
-                "Отлично - ты справился\n${question.question}" to status.color
+                "Отлично - ты справился"
             } else {
-                status = status.nextStatus()
-                if(status == Status.NORMAL) {
-                    question = question.firstQuestion()
-                    "Это неправильный ответ. Давай все по новой\n${question.question}" to status.color
-                } else {
-                    "Это неправильный ответ\n${question.question}" to status.color
+                when (status) {
+                    Status.CRITICAL -> {
+                        status = Status.NORMAL
+                        question = Question.NAME
+                        "Это неправильный ответ. Давай все по новой"
+                    }
+                    else -> {
+                        status = status.nextStatus()
+                        "Это неправильный ответ"
+                    }
                 }
             }
-
         } else {
-            return validationAnswer() to status.color
+            when (question) {
+                Question.NAME -> "Имя должно начинаться с заглавной буквы"
+                Question.PROFESSION -> "Профессия должна начинаться со строчной буквы"
+                Question.MATERIAL -> "Материал не должен содержать цифр"
+                Question.BDAY -> "Год моего рождения должен содержать только цифры"
+                Question.SERIAL -> "Серийный номер содержит только цифры, и их 7"
+                else -> "На этом все, вопросов больше нет"
+            }
         }
     }
 
-    enum class Status(val color : Triple<Int, Int, Int>) {
+    enum class Status(val color: Triple<Int, Int, Int>) {
         NORMAL(Triple(255, 255, 255)),
         WARNING(Triple(255, 120, 0)),
         DANGER(Triple(255, 60, 60)),
         CRITICAL(Triple(255, 0, 0));
 
         fun nextStatus(): Status {
-            return if(this.ordinal < values().lastIndex) values()[this.ordinal + 1] else values()[0]
+            return if (this.ordinal < values().lastIndex) {
+                values()[this.ordinal + 1]
+            } else {
+                values()[0]
+            }
         }
     }
 
     enum class Question(val question: String, val answers: List<String>) {
         NAME("Как меня зовут?", listOf("бендер", "bender")) {
             override fun nextQuestion(): Question = PROFESSION
+            override fun validate(text: String): Boolean = text.trim().get(0).isUpperCase() ?: false
         },
         PROFESSION("Назови мою профессию?", listOf("сгибальщик", "bender")) {
             override fun nextQuestion(): Question = MATERIAL
+            override fun validate(text: String): Boolean = text.trim().get(0).isLowerCase() ?: false
         },
         MATERIAL("Из чего я сделан?", listOf("металл", "дерево", "metal", "iron", "wood")) {
             override fun nextQuestion(): Question = BDAY
+            override fun validate(text: String): Boolean = text.trim().contains(Regex("\\d")).not()
         },
         BDAY("Когда меня создали?", listOf("2993")) {
             override fun nextQuestion(): Question = SERIAL
+            override fun validate(text: String): Boolean = text.trim().contains(Regex("^[0-9]*$"))
         },
         SERIAL("Мой серийный номер?", listOf("2716057")) {
             override fun nextQuestion(): Question = IDLE
+            override fun validate(text: String): Boolean = text.trim().contains(Regex("^[0-9]{7}$"))
         },
         IDLE("На этом все, вопросов больше нет", listOf()) {
             override fun nextQuestion(): Question = IDLE
+            override fun validate(text: String): Boolean = false
         };
 
         abstract fun nextQuestion(): Question
-        fun firstQuestion(): Question = NAME
+        abstract fun validate(text: String): Boolean
     }
-
-    private fun validation(answer: String): Boolean {
-        return when(question) {
-            Question.NAME -> answer == answer.capitalize()
-            Question.PROFESSION -> answer == "${answer.first().toLowerCase()}${answer.substring(1, answer.length)}"
-            Question.MATERIAL -> (answer.matches(Regex("\\D+")))
-            Question.BDAY -> answer.matches(Regex("\\d+"))
-            Question.SERIAL -> answer.matches(Regex("^[\\d]{7}\$"))
-                else -> false
-        }
-    }
-
-    private fun validationAnswer(): String {
-        return when(question) {
-            Question.NAME -> "Имя должно начинаться с заглавной буквы\n${question.question}"
-            Question.PROFESSION -> "Профессия должна начинаться со строчной буквы\n${question.question}"
-            Question.MATERIAL -> "Материал не должен содержать цифр\n${question.question}"
-            Question.BDAY -> "Год моего рождения должен содержать только цифры\n${question.question}"
-            Question.SERIAL -> "Серийный номер содержит только цифры, и их 7\n${question.question}"
-            else -> "На этом все, вопросов больше нет"
-        }
-    }
-
 }

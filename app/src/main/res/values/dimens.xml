@@ -12,7 +12,6 @@
     <dimen name="spacing_small_8">8dp</dimen>
     <dimen name="spacing_tiny_4">4dp</dimen>
 
-    <!-- spacing for send button -->
-    <dimen name="send_button_size_24">24dp</dimen>
-
+    <!-- send button size -->
+    <dimen name="button_size_24">24dp</dimen>
 </resources>
